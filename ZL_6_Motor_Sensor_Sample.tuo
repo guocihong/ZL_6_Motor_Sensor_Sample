@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252" ?>
+<TKStudioOptions Version="3.00" Author="YinHandong[Òüº®¶¬]">
+    <Projects OPTPES="96,96,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,96,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,">
+        <Project ProjectGUID="{8730E0EC-7BCD-4da0-963B-702CECB29F31}" Name="ZL_6_Motor_Sensor_Sample" ACTCFG="Sample">
+            <TARGOPT Name="Sample" OPTDF="0" />
+        </Project>
+    </Projects>
+</TKStudioOptions>
