@@ -33,22 +33,22 @@ void motor_task(void)
 	case MT_READ_IDLE:
 		if (gl_motor_adjust_flag == 1) {//只有电机工作时，才检测电机是否堵转
 			if (bMotorOverCur == 0) {//电机可能被堵转，进入延时确认阶段
-				gl_motor_overcur_tick = 0;
+				gl_motor_overcur_tick = MT_CONFORM_DELAY1;
 				mt_read_state = MT_READ_DELAY1;
 			}
 		}
 		break;
 
 	case MT_READ_DELAY1://延时确认
-		if (gl_motor_overcur_tick > MT_CONFORM_DELAY1) {
+		if (gl_motor_overcur_tick == 0) {
 			// 延时时间到，前30ms低电平不予处理，因为存在毛刺干扰
 			mt_read_state = MT_READ_DELAY2;
-			gl_motor_overcur_tick = 0;
+			gl_motor_overcur_tick = MT_CONFORM_DELAY2;
 		}
 		break;
 		
 	case MT_READ_DELAY2://延时确认
-		if (gl_motor_overcur_tick > MT_CONFORM_DELAY2) {
+		if (gl_motor_overcur_tick == 0) {
 			// 延时时间到, 判断是否是稳定的变化
 			if (bMotorOverCur == 0) {//电机确实为堵转，停止电机               
                 //停止电机

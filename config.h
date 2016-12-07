@@ -46,7 +46,7 @@ typedef struct strUART_Q
   Byte  len;					   //数据包有效长度(含校验字节)
 }sUART_Q;
 
-#define UART_QUEUE_NUM      5            //UART 队列数
+#define UART_QUEUE_NUM      6            //UART 队列数
 
 #define bDoorKeeper         P46          //高阻输入，门磁检测: 1-门磁闭合; 0-门磁打开（应报警）
 #define bMotorOverCur       P33          //高阻输入，1-电机正常工作; 0-电机堵转

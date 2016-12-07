@@ -17,7 +17,7 @@ extern xdata  sUART_Q      uart2_send_queue[UART_QUEUE_NUM];     // 串口发送队列
 extern xdata  sUART_Q      uart2_recv_queue[UART_QUEUE_NUM];     // 串口接收队列
 
 /* AD sample */
-extern xdata  Union16      ad_chn_sample[13];           //最新一轮采样值（已均衡去噪声，每通道一个点，循环保存）
+extern  data  Union16      ad_chn_sample[13];           //最新一轮采样值（已均衡去噪声，每通道一个点，循环保存）
 
 /* 电机控制 */                                          
 extern xdata  const  Byte  Motor_Control_Code[2][12];

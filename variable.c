@@ -17,10 +17,10 @@ xdata  sUART_Q      uart2_send_queue[UART_QUEUE_NUM];     // 串口队列
 xdata  sUART_Q      uart2_recv_queue[UART_QUEUE_NUM];     // 串口队列
 
 /* AD sample */
-idata  Byte         ad_index;                    //正在采样的通道号, 取值范围0~12
+ data  Byte         ad_index;                    //正在采样的通道号, 取值范围0~12
  data  sAD_Sample   ad_sample;                   //保存当前采样值
-idata  sAD_Sum      ad_samp_equ[13];             //均衡去嘈声求和
-xdata  Union16      ad_chn_sample[13];           //最新一轮采样值（已均衡去噪声，每通道一个点，循环保存）
+ data  sAD_Sum      ad_samp_equ[13];             //均衡去嘈声求和
+ data  Union16      ad_chn_sample[13];           //最新一轮采样值（已均衡去噪声，每通道一个点，循环保存）
 
 /* Doorkeep(门磁) */
 bdata  bit          gl_dk_status;                //门磁开关状态（每1s动态检测）: 1 - 闭合; 0 - 打开(需要报警)                    

@@ -6,7 +6,7 @@ extern idata  Byte         recv2_state;                 // receive state
 extern idata  Byte         recv2_timer;                 // receive time-out, 用于字节间超时判定
 
 /* AD sample */
-extern idata  Byte         ad_index;                    //正在采样的通道号, 取值范围0~12
+extern  data  Byte         ad_index;                    //正在采样的通道号, 取值范围0~12
 extern  data  sAD_Sample   ad_sample;                   //保存当前采样值
 
 /* Doorkeep(门磁) */
@@ -37,12 +37,17 @@ void timer0_init(void)   // 5ms@22.1184MHz
 	
 	// 启动AD转换
 	P5 = ad_index;
+    _nop_();
+    _nop_();
+    _nop_();
+    _nop_();
 	ADC_CONTR |= ADC_START;
 }
 
 void timer0_isr(void) interrupt TF0_VECTOR using 0
 {	               
     // 重装初值
+    TR0 = 0;
 	TL0 = 0x00;		                              // 设置定时初值
 	TH0 = 0xDC;		                              // 设置定时初值
 	TR0 = 1;		                              // 定时器0开始计时
@@ -60,12 +65,14 @@ void timer0_isr(void) interrupt TF0_VECTOR using 0
 		ad_sample.valid = TRUE;
 			
 		//左6道钢丝和右6道钢丝的采样值需要减去采样偏差以及杆自身的采样值需要减去采样偏差
-		if (ad_sample.val > sensor_sample_offset[ad_index]) {
-			ad_sample.val -= sensor_sample_offset[ad_index];
-		} else {
-			ad_sample.val = 0;
-		}
-		
+        if ((ad_index >= 0) && (ad_index <= 11)) {
+            if (ad_sample.val > sensor_sample_offset[ad_index]) {
+                ad_sample.val -= sensor_sample_offset[ad_index];
+            } else {
+                ad_sample.val = 0;
+            }
+        }
+        
 		// 启动下一通道采样
 		if (ad_index >= 12) {
 			ad_index = 0;
@@ -74,12 +81,27 @@ void timer0_isr(void) interrupt TF0_VECTOR using 0
 		}
 
 		P5 = ad_index;	                          // 选择模拟输入
-		ADC_CONTR |= ADC_START;                   // 启动转换
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+   		ADC_CONTR = ADC_POWER_ENABLE | ADC_SPEED_540 | ADC_SAMPLE_CHANNEL; // 启动转换
+        _nop_();
+        _nop_();
+        _nop_();
+        _nop_();
+        ADC_CONTR |=  ADC_START;
 	}
 
 	// increment task tick counters
 	gl_dk_tick++;                                 //门磁检测计时tick
-	gl_motor_overcur_tick++;                      //电机堵转计时tick
+    if (gl_motor_overcur_tick > 0) {
+    	gl_motor_overcur_tick--;                      //电机堵转计时tick
+    }
 	 
 	if (motor_run_tick > 0) {
 		motor_run_tick--;

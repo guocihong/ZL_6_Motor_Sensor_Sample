@@ -1,7 +1,7 @@
 #include "system_init.h"
 
 /* 传感器采样偏差 */
-extern xdata  Uint16       sensor_sample_offset[13];    //传感器采样偏差：没有外力时，传感器采样值不为0，大约400左右，需要矫正。瞬间张力 = 采样值 - 采样偏差
+extern  xdata  Uint16       sensor_sample_offset[13];    //传感器采样偏差：没有外力时，传感器采样值不为0，大约400左右，需要矫正。瞬间张力 = 采样值 - 采样偏差
 								                    
 static void gpio_init(void);
 static void get_config_info(void);
@@ -24,14 +24,17 @@ static void gpio_init(void)
 	//设置P0口为推挽输出
 	P0M1 = 0x00;
 	P0M0 = 0xFF;
+    P0 = 0x00;
 
 	//设置P10~P16为推挽输出，P17为AD模式
 	P1M1 = 0x80;
-	P1M0 = 0x7F;
+	P1M0 = 0xFF;
+    P15 = P16 = 0;
 
 	//设置P2口为推挽输出
 	P2M1 = 0x00;
 	P2M0 = 0xFF;
+    P2 = 0x00;
 
 	//设置P33为高阻输入
 	P3M1 = 0x08;

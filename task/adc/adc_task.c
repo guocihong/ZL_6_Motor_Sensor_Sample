@@ -1,12 +1,12 @@
 #include "task/adc/adc_task.h"
 
 /* AD sample */
-#define AD_EQU_PNUM             4                                 //每道钢丝采样4次求平均值
+#define AD_EQU_PNUM        4                            //每道钢丝采样4次求平均值
 
-extern idata  Byte         ad_index;                    //正在采样的通道号, 取值范围0~12
+extern  data  Byte         ad_index;                    //正在采样的通道号, 取值范围0~12
 extern  data  sAD_Sample   ad_sample;                   //保存当前采样值
-extern idata  sAD_Sum      ad_samp_equ[13];             //均衡去嘈声求和
-extern xdata  Union16      ad_chn_sample[13];           //最新一轮采样值（已均衡去噪声，每通道一个点，循环保存）
+extern  data  sAD_Sum      ad_samp_equ[13];             //均衡去嘈声求和
+extern  data  Union16      ad_chn_sample[13];           //最新一轮采样值（已均衡去噪声，每通道一个点，循环保存）
 
 /* UART2 */
 extern  data  Byte         uart2_q_index;               // 正在发送某队列项的序号：若为0xFF, 表示没有任何项进入发送流程
@@ -122,11 +122,6 @@ void adc_task(void)
                     
                     gl_motor_overcur_flag         = 0;
                     is_timeout                    = 0;
-				}
-				else
-				{   //无空闲buffer, 丢弃本命令
-					//检查: 若有队列项正在发送, 等待它完成
-					while (uart2_q_index != 0xFF);	//若死锁,将引起 WDT 复位
 				}
 			}
 		}
