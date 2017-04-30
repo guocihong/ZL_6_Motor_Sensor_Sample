@@ -1,7 +1,7 @@
 #include "task/motor/motor_task.h"
 
 #define MT_CONFORM_DELAY1       (30 / SCHEDULER_TICK)             //电机确认延时1
-#define MT_CONFORM_DELAY2       (200 / SCHEDULER_TICK)            //电机确认延时2
+#define MT_CONFORM_DELAY2       (400 / SCHEDULER_TICK)            //电机确认延时2
 
 /* 任务状态 */
 #define MT_READ_START           0

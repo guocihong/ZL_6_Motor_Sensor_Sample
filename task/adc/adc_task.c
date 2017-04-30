@@ -1,7 +1,7 @@
 #include "task/adc/adc_task.h"
 
 /* AD sample */
-#define AD_EQU_PNUM        4                            //每道钢丝采样4次求平均值
+extern  data  Byte         ad_equ_pum;                  //每道钢丝采样多次求平均值
 
 extern  data  Byte         ad_index;                    //正在采样的通道号, 取值范围0~12
 extern  data  sAD_Sample   ad_sample;                   //保存当前采样值
@@ -60,11 +60,11 @@ void adc_task(void)
 		ad_samp_equ[index].point++;
 
 		// 2. 当前通道是否满足去嘈声点数
-		if (ad_samp_equ[index].point == AD_EQU_PNUM)
+		if (ad_samp_equ[index].point == ad_equ_pum)
 		{
 			// 已满去嘈声点数，可求出均衡后的一个点
 			// 2.a 求出对应通道的一个采样点
-			val = ad_samp_equ[index].sum >> 2;  //除于4
+			val = ad_samp_equ[index].sum / ad_equ_pum;  //求平均值
 
 			// 2.b 清零当前通道的去嘈声求和结构
 			ad_samp_equ[index].sum = 0;

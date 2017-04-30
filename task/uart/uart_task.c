@@ -18,6 +18,7 @@ extern xdata  sUART_Q      uart2_recv_queue[UART_QUEUE_NUM];     // 串口接收队列
 
 /* AD sample */
 extern  data  Union16      ad_chn_sample[13];           //最新一轮采样值（已均衡去噪声，每通道一个点，循环保存）
+extern  data  Byte         ad_equ_pum;                  //每道钢丝采样多次求平均值
 
 /* 电机控制 */                                          
 extern xdata  const  Byte  Motor_Control_Code[2][12];
@@ -108,7 +109,7 @@ void uart_task(void)
 					break;
 					
 				case 0xF1: //设置传感器采样偏差---->消除电路上的误差                  
-					//1. 写入flash并更新变量
+					//1.写入flash并更新变量
 					flash_enable();
 					flash_erase(EEPROM_SECTOR3);
 
@@ -134,6 +135,20 @@ void uart_task(void)
 					flash_write(0x5a, EEPROM_SECTOR3);
 					flash_disable(); 
 
+					break;
+                    
+				case 0xF9: //设置平均值点数-->采样多少个点求平均值              
+					//1.更新变量
+                    ad_equ_pum = ptr[6];
+                
+                    //2.写入flash
+					flash_enable();
+					flash_erase(EEPROM_SECTOR4);
+					flash_write(ad_equ_pum, EEPROM_SECTOR4 + 1);                
+					flash_write(0x5a, EEPROM_SECTOR4);
+					flash_disable(); 
+
+                
 					break;
 				}
 				

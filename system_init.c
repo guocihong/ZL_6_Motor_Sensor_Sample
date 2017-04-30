@@ -2,7 +2,10 @@
 
 /* 传感器采样偏差 */
 extern  xdata  Uint16       sensor_sample_offset[13];    //传感器采样偏差：没有外力时，传感器采样值不为0，大约400左右，需要矫正。瞬间张力 = 采样值 - 采样偏差
-								                    
+	
+/* AD sample */
+extern   data  Byte         ad_equ_pum;                  //每道钢丝采样多次求平均值
+    
 static void gpio_init(void);
 static void get_config_info(void);
 
@@ -83,6 +86,14 @@ static void get_config_info(void)
 		for (j = 0; j < 13; j++) {
 			sensor_sample_offset[j] = 0;
 		}
+	}
+    
+    //读平均值点数-->采样多少个点求平均值
+	temp = flash_read(EEPROM_SECTOR4);
+	if (temp == 0x5A) { //有有效设置
+        ad_equ_pum = flash_read(EEPROM_SECTOR4 + 1);
+	} else {	//取缺省值
+        ad_equ_pum = 4;
 	}
 
 	//禁止Flash访问
